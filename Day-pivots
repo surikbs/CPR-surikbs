@@ -1,0 +1,97 @@
+//@version=5
+indicator("CPR CurrentDay", shorttitle="CPR CurrentDay", overlay=true)
+higherTF = input.timeframe("D")
+//Previous days
+prevCloseHTF = request.security(syminfo.tickerid, higherTF, close[1], lookahead=barmerge.lookahead_on)
+prevOpenHTF = request.security(syminfo.tickerid, higherTF, open[1], lookahead=barmerge.lookahead_on)
+prevHighHTF = request.security(syminfo.tickerid, higherTF, high[1], lookahead=barmerge.lookahead_on)
+prevLowHTF = request.security(syminfo.tickerid, higherTF, low[1], lookahead=barmerge.lookahead_on)
+
+//Current day CPR
+pivotstd = (prevHighHTF + prevLowHTF + prevCloseHTF) / 3
+bcpr = (prevHighHTF + prevLowHTF) / 2
+tcpr = (pivotstd - bcpr) + pivotstd
+
+r1 = pivotstd * 2 - prevLowHTF
+s1 = pivotstd * 2 - prevHighHTF
+r2 = pivotstd + ( prevHighHTF - prevLowHTF )
+s2 = pivotstd - ( prevHighHTF - prevLowHTF )
+r3 = prevHighHTF + 2 * ( pivotstd - prevLowHTF )
+s3 = prevLowHTF - 2 * ( prevHighHTF - pivotstd )
+
+width = 1
+newday = pivotstd[1] == pivotstd
+tfallowed = timeframe.period == "1" or timeframe.period == "5" or timeframe.period == "15" or timeframe.period == "30"
+
+plot(tfallowed and newday ? s1 : na, color=color.orange, title="S1", style=plot.style_circles, linewidth=width)
+plot(tfallowed and newday ? s2 : na, color=color.orange, title="S2", style=plot.style_circles, linewidth=width)
+plot(tfallowed and newday ? s3 : na, color=color.orange, title="S3", style=plot.style_circles, linewidth=width)
+plot(tfallowed and newday ? r1 : na, color=color.orange, title="R1", style=plot.style_circles, linewidth=width)
+plot(tfallowed and newday ? r2 : na, color=color.orange, title="R2", style=plot.style_circles, linewidth=width)
+plot(tfallowed and newday ? r3 : na, color=color.orange, title="R3", style=plot.style_circles, linewidth=width)
+
+plot(tfallowed and newday ? pivotstd : na, color=color.purple, title="HLC3", style=plot.style_circles, linewidth = width + 1)
+plot(tfallowed and newday ? tcpr : na, color=color.blue, title="HL2", style=plot.style_circles, linewidth = width + 1)
+plot(tfallowed and newday ? bcpr : na, color=color.blue, title="2HLC3-HL2", style=plot.style_circles, linewidth = width + 1)
+
+plot(tfallowed and newday ? prevHighHTF : na, "PDH", color=color.green, style=plot.style_linebr, linewidth = width)
+plot(tfallowed and newday ? prevLowHTF : na, "PDL", color=color.red, style=plot.style_linebr, linewidth = width)
+
+
+//Ploting current days
+
+// var line prevHighHTFline = na
+// var line prevLowHTFline = na
+// var line r3Line = na
+// var line r2Line = na
+// var line r1Line = na
+// var line pLine = na
+// var line s1Line = na
+// var line s2Line = na
+// var line s3Line = na
+// var line bcprline = na
+// var line tcprline = na
+
+// if pivotstd[1] != pivotstd
+// 	prevHighHTFline := line.new(bar_index, prevHighHTF, bar_index, prevHighHTF, width = 2, color =  #0E7A34, style = line.style_solid)
+// 	prevLowHTFline := line.new(bar_index, prevLowHTF, bar_index, prevLowHTF, width = 2, color =  #DC143C, style = line.style_solid)
+// 	r3Line := line.new(bar_index, r3, bar_index, r3, width = 3, color =  #0E7A34, style = line.style_dotted)
+// 	r2Line := line.new(bar_index, r2, bar_index, r2, width = 3, color =  #0E7A34, style = line.style_dotted)
+// 	r1Line := line.new(bar_index, r1, bar_index, r1, width = 3, color =  #0E7A34, style = line.style_dotted)
+// 	bcprline := line.new(bar_index, bcpr, bar_index, bcpr, width=5, color = #449bdd, style = line.style_dotted)
+// 	pLine := line.new(bar_index, pivotstd, bar_index, pivotstd, width=5, color = #9C27B0, style = line.style_dotted)
+// 	tcprline := line.new(bar_index, tcpr, bar_index, tcpr, width=5, color = #449bdd, style = line.style_dotted)
+// 	s1Line := line.new(bar_index, s1, bar_index, s1, width = 3, color=#DC143C, style = line.style_dotted)
+// 	s2Line := line.new(bar_index, s2, bar_index, s2, width = 3, color=#DC143C, style = line.style_dotted)
+// 	s3Line := line.new(bar_index, s3, bar_index, s3, width = 3, color=#DC143C, style = line.style_dotted)
+
+// if not na(pLine) and line.get_x2(pLine) != bar_index
+// 	line.set_x2(prevHighHTFline, bar_index)
+// 	line.set_x2(prevLowHTFline, bar_index)
+// 	line.set_x2(r3Line, bar_index)
+// 	line.set_x2(r2Line, bar_index)
+// 	line.set_x2(r1Line, bar_index)
+// 	line.set_x2(bcprline, bar_index)
+// 	line.set_x2(pLine, bar_index)
+// 	line.set_x2(tcprline, bar_index)
+// 	line.set_x2(s1Line, bar_index)
+// 	line.set_x2(s2Line, bar_index)
+// 	line.set_x2(s3Line, bar_index)
+
+
+//@version=5
+t20_sma_len =20
+t20_sma_src = close
+t20_sma_offset = input.int(title="Offset", defval=0, minval=-500, maxval=500)
+t20_sma_out = ta.sma(t20_sma_src, t20_sma_len)
+plot(t20_sma_out, color=color.blue, title="20 SMA", offset=t20_sma_offset)
+
+// t8_sma_len = 8
+// t8_sma_src = close
+// t8_sma_offset = input.int(title="Offset", defval=0, minval=-500, maxval=500)
+// t8_sma_out = ta.sma(t8_sma_src, t8_sma_len)
+// plot(t8_sma_out, color=color.purple, title="MA", offset=t8_sma_offset)
+
+//smoothingLength = input.int(title = "Length", defval = 5, minval = 1, maxval = 100, group="Smoothing")
+//smoothingLine = ta.sma(src, len)
+//plot(smoothingLine, title="Smoothing Line", color=#f37f20, offset=offset, display=display.none)
