@@ -1,0 +1,54 @@
+//@version=5
+strategy("Surikbs", overlay = true)
+
+t25_sma_len =25
+t25_sma_src = close
+t25_sma_out = ta.ema(t25_sma_src, t25_sma_len)
+//plot(t25_sma_out, color=color.red, title="25 SMA")
+
+t12_sma_len = 12
+t12_sma_src = close
+t12_sma_out = ta.ema(t12_sma_src, t12_sma_len)
+//plot(t12_sma_out, color=color.green, title="12 SMA")
+
+
+tc_ema_len = 32
+tc_ema_src = close
+tc_ema_out = ta.ema(tc_ema_src, tc_ema_len)
+plot(tc_ema_out, color=color.blue, title="TC EMA")
+
+tl_ema_len = 32
+tl_ema_src = low
+tl_ema_out = ta.ema(tl_ema_src, tl_ema_len)
+plot(tl_ema_out, color=color.green, title="TL EMA")
+
+
+th_ema_len = 32
+th_ema_src = high
+th_ema_out = ta.ema(th_ema_src, th_ema_len)
+plot(th_ema_out, color=color.red, title="TH EMA")
+
+debugLabel(txt, lblColor) => label.new(
+     bar_index, high, text = txt, color = lblColor, textcolor = color.white,
+     style = label.style_label_lower_right, size = size.large
+ )
+
+bool isgreen = ta.crossover(t12_sma_out, t25_sma_out)
+bool isgreenexit = ta.crossover(close, th_ema_out)
+bool isred = ta.crossunder(t12_sma_out, t25_sma_out)
+
+[macdLine, signalLine, histLine]  = ta.macd(close,26, 100, 9)
+
+if isgreen and histLine > 0
+    // debugLabel("Long market order created", color.green)
+    strategy.entry("Buy", strategy.long )
+
+if isred and histLine < 0
+    // debugLabel("Short market order created", color.red)
+    strategy.entry("Sell", strategy.short)
+
+
+plotshape(isgreen, title='Buy Label', style=shape.triangleup, location=location.belowbar, size=size.tiny, text='Buy', textcolor=color.new(color.white, 0), color=color.new(color.green, 0))
+plotshape(isred, title='Sell Label', style=shape.triangledown, location=location.abovebar, size=size.tiny, text='Sell', textcolor=color.new(color.white, 0), color=color.new(color.red, 0))
+
+barcolor(t12_sma_out > t25_sma_out ? color.green : t12_sma_out < t25_sma_out ? color.red : na )
