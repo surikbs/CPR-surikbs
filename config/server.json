@@ -2,6 +2,6 @@
   "port": 8080,
   "enableSSL": false,
   "sslPort": 8443,
-  "deployDir": "/tmp/python-deploy",
-  "logFileDir": "/tmp/python-deploy/logs"
+  "deployDir": "/Users/surikbs/Documents/GitHub/CPR-surikbs/python-deploy",
+  "logFileDir": "/Users/surikbs/Documents/GitHub/CPR-surikbs/python-deploy/logs"
 }

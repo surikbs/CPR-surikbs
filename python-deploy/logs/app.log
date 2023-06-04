@@ -1,0 +1,14 @@
+2023-06-05 01:42:08: serverConfig => {'port': 8080, 'enableSSL': False, 'sslPort': 8443, 'deployDir': '/Users/surikbs/Documents/GitHub/CPR-surikbs/python-deploy', 'logFileDir': '/Users/surikbs/Documents/GitHub/CPR-surikbs/python-deploy/logs'}
+2023-06-05 01:42:08: brokerAppConfig => {'broker': 'zerodha', 'clientID': 'dummy', 'appKey': 'dummy', 'appSecret': 'dummy', 'redirectUrl': 'http://localhost:8080/apis/broker/login/zerodha'}
+2023-06-05 01:42:08: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://localhost:8080
+2023-06-05 01:42:08: [33mPress CTRL+C to quit[0m
+2023-06-05 01:42:08:  * Restarting with stat
+2023-06-05 01:42:08: serverConfig => {'port': 8080, 'enableSSL': False, 'sslPort': 8443, 'deployDir': '/Users/surikbs/Documents/GitHub/CPR-surikbs/python-deploy', 'logFileDir': '/Users/surikbs/Documents/GitHub/CPR-surikbs/python-deploy/logs'}
+2023-06-05 01:42:08: brokerAppConfig => {'broker': 'zerodha', 'clientID': 'dummy', 'appKey': 'dummy', 'appSecret': 'dummy', 'redirectUrl': 'http://localhost:8080/apis/broker/login/zerodha'}
+2023-06-05 01:42:08:  * Debugger is active!
+2023-06-05 01:42:08:  * Debugger PIN: 104-346-043
+2023-06-05 01:43:35: handleBrokerLogin appKey dummy
+2023-06-05 01:43:35: ==> ZerodhaLogin .args => ImmutableMultiDict([])
+2023-06-05 01:43:35: Redirecting to zerodha login url = https://kite.zerodha.com/connect/login?api_key=dummy&v=3
+2023-06-05 01:43:35: 127.0.0.1 - - [05/Jun/2023 01:43:35] "[32mGET /apis/broker/login/zerodha HTTP/1.1[0m" 302 -
