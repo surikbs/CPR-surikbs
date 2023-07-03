@@ -11,20 +11,20 @@ t12_sma_out = ta.ema(t12_sma_src, t12_sma_len)
 //plot(t12_sma_out, color=color.green, title="12 SMA")
 
 
-tc_ema_len = 32
-tc_ema_src = close
-tc_ema_out = ta.ema(tc_ema_src, tc_ema_len)
+//tc_ema_len = 32
+//tc_ema_src = close
+//tc_ema_out = ta.ema(tc_ema_src, tc_ema_len)
 //plot(tc_ema_out, color=color.blue, title="TC EMA")
 
-tl_ema_len = 32
-tl_ema_src = low
-tl_ema_out = ta.ema(tl_ema_src, tl_ema_len)
+//tl_ema_len = 32
+//tl_ema_src = low
+//tl_ema_out = ta.ema(tl_ema_src, tl_ema_len)
 //plot(tl_ema_out, color=color.green, title="TL EMA")
 
 
-th_ema_len = 32
-th_ema_src = high
-th_ema_out = ta.ema(th_ema_src, th_ema_len)
+//th_ema_len = 32
+//th_ema_src = high
+//th_ema_out = ta.ema(th_ema_src, th_ema_len)
 //plot(th_ema_out, color=color.red, title="TH EMA")
 
 
