@@ -27,10 +27,6 @@ th_ema_src = high
 th_ema_out = ta.ema(th_ema_src, th_ema_len)
 //plot(th_ema_out, color=color.red, title="TH EMA")
 
-debugLabel(txt, lblColor) => label.new(
-     bar_index, high, text = txt, color = lblColor, textcolor = color.white,
-     style = label.style_label_lower_right, size = size.large
- )
 
 bool isgreen = ta.crossover(t12_sma_out, t25_sma_out)
 bool isgreenexit = ta.crossover(close, th_ema_out)
