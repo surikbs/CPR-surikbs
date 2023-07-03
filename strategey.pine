@@ -1,6 +1,5 @@
 //@version=5
 strategy("Surikbs", overlay = true)
-
 t25_sma_len =25
 t25_sma_src = close
 t25_sma_out = ta.ema(t25_sma_src, t25_sma_len)
@@ -15,18 +14,18 @@ t12_sma_out = ta.ema(t12_sma_src, t12_sma_len)
 tc_ema_len = 32
 tc_ema_src = close
 tc_ema_out = ta.ema(tc_ema_src, tc_ema_len)
-plot(tc_ema_out, color=color.blue, title="TC EMA")
+//plot(tc_ema_out, color=color.blue, title="TC EMA")
 
 tl_ema_len = 32
 tl_ema_src = low
 tl_ema_out = ta.ema(tl_ema_src, tl_ema_len)
-plot(tl_ema_out, color=color.green, title="TL EMA")
+//plot(tl_ema_out, color=color.green, title="TL EMA")
 
 
 th_ema_len = 32
 th_ema_src = high
 th_ema_out = ta.ema(th_ema_src, th_ema_len)
-plot(th_ema_out, color=color.red, title="TH EMA")
+//plot(th_ema_out, color=color.red, title="TH EMA")
 
 debugLabel(txt, lblColor) => label.new(
      bar_index, high, text = txt, color = lblColor, textcolor = color.white,
@@ -41,11 +40,43 @@ bool isred = ta.crossunder(t12_sma_out, t25_sma_out)
 
 if isgreen and histLine > 0
     // debugLabel("Long market order created", color.green)
-    strategy.entry("Buy", strategy.long )
+    strategy.entry("Buy", strategy.long)
 
 if isred and histLine < 0
     // debugLabel("Short market order created", color.red)
     strategy.entry("Sell", strategy.short)
+
+//Trailing stop loss
+// Get the current ATR
+atr = ta.atr(14)
+var trailPrice = 0.0
+var barIndex = 10
+ll = ta.lowest(low, 5)
+hh = ta.highest(high, 5)
+
+t_trailPrice = strategy.position_size > 0 ? ll - atr: hh + atr 
+
+// trail long stop
+if (t_trailPrice > trailPrice or trailPrice == 0.0 ) and strategy.position_size > 0
+    trailPrice := t_trailPrice
+//trail short stop
+if (t_trailPrice < trailPrice or trailPrice == 0.0) and strategy.position_size < 0
+    trailPrice := t_trailPrice
+
+
+// if long stop is hit, reset trail stop
+// if trailPrice != 0.0 and low >= trailPrice and strategy.position_size > 0
+//     trailPrice := na
+    //strategy.exit("Buy", trail_price = trailPrice)
+
+
+// // if short stop is hit, reset trail stop
+// if trailPrice != 0.0 and high <= trailPrice and strategy.position_size < 0
+//     trailPrice := na
+    //strategy.exit("Sell", trail_price = trailPrice)
+
+// Draw SL
+plot(trailPrice, color = color.purple, title = "Trailing SL")
 
 
 plotshape(isgreen, title='Buy Label', style=shape.triangleup, location=location.belowbar, size=size.tiny, text='Buy', textcolor=color.new(color.white, 0), color=color.new(color.green, 0))
